@@ -6,9 +6,11 @@ import java.util.Map;
 public class MorseTranslator {
 
     private final Map<String, String> MORSE_MAP;
+    private final Map<String, String> ENGLISH_MAP;
 
     public MorseTranslator () {
         this.MORSE_MAP = new HashMap<>();
+        this.ENGLISH_MAP = new HashMap<>();
 
         this.MORSE_MAP.put(".-", "a");
         this.MORSE_MAP.put("-...", "b");
@@ -37,6 +39,12 @@ public class MorseTranslator {
         this.MORSE_MAP.put("-.--", "y");
         this.MORSE_MAP.put("--..", "z");
         this.MORSE_MAP.put("/", " ");
+
+        // fill ENGLISH_MAP
+        for (Map.Entry<String, String> entry: this.MORSE_MAP.entrySet()) {
+            this.ENGLISH_MAP.put(entry.getValue(), entry.getKey());
+        }
+
     }
 
     public String morseToEnglish (String input) {
@@ -47,7 +55,21 @@ public class MorseTranslator {
             finished += this.MORSE_MAP.get(letter);
         }
         return finished;
+    }
 
+    public String englishToMorse (String input) {
+        String finished = "";
+        String[] splitInput = input.split(" ");
+        for (String word : splitInput) {
+            char[] letters = word.toCharArray();
+            for (char letter : letters) {
+                System.out.println(letter);
+                finished += this.ENGLISH_MAP.get("" + letter);
+                finished += " ";
+            }
+            finished += "/ ";
+        }
+        return finished.substring(0, finished.length()-3);
     }
 
 }
